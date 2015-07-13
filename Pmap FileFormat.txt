@@ -1,0 +1,49 @@
+#define PATHING_MAP_MAGIC 'PMAP'
+
+#pragma pack(1)
+struct PathingMapHeader
+{
+	int Magic; // MAGIC Bytes (PMAP)
+	unsigned long MapHash;  // hash of mapfile
+	int TrapezoidCount;
+	int FirstTrapezoid;//Offset to Trapezoid Chunk
+	int AdjacentCount;
+	int FirstAdjacent;//Offset to Adjacent Chunk
+	float startX;
+	float startY;
+	float Width;
+	float Heigth;
+};
+
+#pragma pack(1)
+struct PathingMapTrapezoid
+{
+	int AdjacentsCount;
+	int Adjacents;		//start index in adjacent array
+
+	short Plane;		//plane the trapezoid is in
+
+	float YT;
+	float YB;
+
+	float XTL;
+	float XTR;
+	float XBL;
+	float XBR;
+};
+
+#pragma pack(1)
+struct Adjacent
+{
+	unsigned int Trapezoid; //index of trapezoid
+	float XL;		//left/right relative to walking direction
+	float YL;		//			L /\ R
+	float XR;		//			  || <-- walking direction
+	float YR;		//			R \/ L
+};
+
+/**
+* Header
+* TrapezoidCunk
+* AdjacentChunk
+**/
