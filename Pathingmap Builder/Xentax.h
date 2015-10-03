@@ -1,5 +1,6 @@
 #pragma once
 
+// header of the gw.dat
 struct MainHeader
 {
 	unsigned char ID[4];
@@ -11,6 +12,7 @@ struct MainHeader
 	int Flags;
 };
 
+// Master File Table Header
 struct MFTHeader
 {
 	unsigned char ID[4];
@@ -21,6 +23,7 @@ struct MFTHeader
 	int Unk5;
 };
 
+// Master File Table Entry
 struct MFTEntry
 {
 	__int64 Offset;
@@ -33,6 +36,7 @@ struct MFTEntry
 	__int32 Hash;
 };
 
+// Master File Table expansion
 struct MFTExpansion
 {
 	int FileNumber;

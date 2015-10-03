@@ -19,6 +19,7 @@ vector<MFTEntry> MFT;
 
 int PathingMapCount = 0;
 
+// moves file pointer to the specific offset
 void _nfseek(HANDLE f, __int64 offset, int origin)
 {
 	LARGE_INTEGER i;
@@ -26,9 +27,10 @@ void _nfseek(HANDLE f, __int64 offset, int origin)
 	SetFilePointerEx(f,i,NULL,FILE_BEGIN);
 }
 
+// reads count * size bytes from file into buffer
 void _nfread(void *buffer, int size, int count, HANDLE f)
 {
-	DWORD bread;
+	DWORD bread; // bytes read
 	int errcde=ReadFile(f,buffer,size*count,&bread,NULL);
 	if (!errcde)
 	{
@@ -169,8 +171,8 @@ void ExtractGWDat(char* gwdat)
 		return;
 	}
 	fclose(g);
-	GWDat=CreateFile(gwdat,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
-	_nfread(&GWHead,sizeof(GWHead),1,GWDat);
+	GWDat=CreateFile(gwdat,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL); // opens the file
+	_nfread(&GWHead, sizeof(GWHead),1,GWDat); // reads header of gw.dat (at beginning)
 	printf("Header data:\n");
 	printf("ID          = %c%c%c%c\n",GWHead.ID[0],GWHead.ID[1],GWHead.ID[2],GWHead.ID[3]);
 	if (!(GWHead.ID[0]==0x33 && GWHead.ID[1]==0x41 && GWHead.ID[2]==0x4e && GWHead.ID[3]==0x1a))
@@ -253,6 +255,7 @@ void ExtractGWDat(char* gwdat)
 	}
 	RemoveDirectory(TEXT("temp"));
 }
+
 
 int _tmain(int argc, char* argv[])
 {

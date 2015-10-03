@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Quelldateien">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Headerdateien">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="FFNA">
       <UniqueIdentifier>{02f33505-85c7-4305-878c-db53089af28b}</UniqueIdentifier>
     </Filter>
@@ -18,13 +10,21 @@
     <Filter Include="PathingMap">
       <UniqueIdentifier>{537b1737-9d65-4de5-af20-673b46791462}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pathingmap Builder.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="FFNA.cpp">
       <Filter>FFNA</Filter>
@@ -38,10 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="FFNA.h">
       <Filter>FFNA</Filter>
