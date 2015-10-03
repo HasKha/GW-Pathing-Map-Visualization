@@ -11,5 +11,8 @@ Thanks to ACB for [https://bitbucket.org/ACB/gwpathingmaps]()
 3. Build and run visualization
 
 ### Results
+Visualization of trapezoids (Domain of Anguish - City)
 ![DoA-City-Trapezoids](Visualization/example-doa_city_trapezoids.PNG)
+
+Visualization with full trapezoids (Domain of Anguish - full)
 ![DoA-Full](Visualization/example-doa_full.PNG)
