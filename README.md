@@ -12,4 +12,4 @@ Thanks to ACB for [https://bitbucket.org/ACB/gwpathingmaps]()
 
 ### Results
 ![DoA-City-Trapezoids](Visualization/example-doa_city_trapezoids.PNG)
-![DoA-Full](Visualization/example-full.PNG)
+![DoA-Full](Visualization/example-doa_full.PNG)
