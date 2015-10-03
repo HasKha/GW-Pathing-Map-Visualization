@@ -99,8 +99,8 @@ void Viewer::RenderPMap() {
 	glScaled(scale_, scale_, 1);
 	glTranslated(translate_.x(), translate_.y(), 0);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // full quads
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // full quads
 
 	glColor3f(1, 0, 0);
 	glBegin(GL_QUADS);
