@@ -1,15 +1,9 @@
 #include <stdio.h>
 #include <vector>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-
 #include "../PathingMap.h"
 #include "Viewer.h"
 
-SDL_Window* window;
-SDL_RendererInfo renderer_info;
-std::vector<PathingMapTrapezoid> trapezoids;
 
 int main(int argc, char **argv) {
 
