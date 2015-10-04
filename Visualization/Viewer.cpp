@@ -8,6 +8,7 @@ Viewer::Viewer() {
 	refresh_ = false;
 	scale_ = 0.0001;
 	translate_ = Point2d();
+	wireframe_ = false;
 }
 
 void Viewer::InitializeWindow() {
@@ -52,19 +53,25 @@ void Viewer::Execute() {
 				quit = true;
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				handleMouseDownEvent(e.button);
+				HandleMouseDownEvent(e.button);
 				break;
 			case SDL_MOUSEBUTTONUP:
-				handleMouseUpEvent(e.button);
+				HandleMouseUpEvent(e.button);
 				break;
 			case SDL_MOUSEMOTION:
-				handleMouseMoveEvent(e.motion);
+				HandleMouseMoveEvent(e.motion);
 				break;
 			case SDL_MOUSEWHEEL:
-				handleMouseWheelEvent(e.wheel);
+				HandleMouseWheelEvent(e.wheel);
 				break;
 			case SDL_WINDOWEVENT:
-				handleWindowEvent(e.window);
+				HandleWindowEvent(e.window);
+				break;
+			case SDL_KEYDOWN:
+				HandleKeyDownEvent(e.key);
+				break;
+			case SDL_KEYUP:
+				HandleKeyUpEvent(e.key);
 				break;
 			default:
 				break;
@@ -99,8 +106,11 @@ void Viewer::RenderPMap() {
 	glScaled(scale_, scale_, 1);
 	glTranslated(translate_.x(), translate_.y(), 0);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // full quads
+	if (wireframe_) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe
+	} else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // full quads
+	}
 
 	glColor3f(1, 0, 0);
 	glBegin(GL_QUADS);
@@ -122,19 +132,19 @@ void Viewer::Close() {
 	SDL_Quit();
 }
 
-void Viewer::handleMouseDownEvent(SDL_MouseButtonEvent button) {
+void Viewer::HandleMouseDownEvent(SDL_MouseButtonEvent button) {
 	if (button.button == SDL_BUTTON_LEFT) {
 		mouse_down_ = true;
 	}
 }
 
-void Viewer::handleMouseUpEvent(SDL_MouseButtonEvent button) {
+void Viewer::HandleMouseUpEvent(SDL_MouseButtonEvent button) {
 	if (button.button == SDL_BUTTON_LEFT) {
 		mouse_down_ = false;
 	}
 }
 
-void Viewer::handleMouseMoveEvent(SDL_MouseMotionEvent motion) {
+void Viewer::HandleMouseMoveEvent(SDL_MouseMotionEvent motion) {
 	if (mouse_down_) {
 		Point2d diff = Point2d(motion.xrel, -motion.yrel);
 		diff.x() /= width_; // remap from [0, WIDTH] to [0, 1]
@@ -149,7 +159,7 @@ void Viewer::handleMouseMoveEvent(SDL_MouseMotionEvent motion) {
 	}
 }
 
-void Viewer::handleMouseWheelEvent(SDL_MouseWheelEvent wheel) {
+void Viewer::HandleMouseWheelEvent(SDL_MouseWheelEvent wheel) {
 	if (wheel.y > 0) {
 		scale_ *= 1.25;
 	} else {
@@ -158,7 +168,7 @@ void Viewer::handleMouseWheelEvent(SDL_MouseWheelEvent wheel) {
 	refresh_ = true;
 }
 
-void Viewer::handleWindowEvent(SDL_WindowEvent window) {
+void Viewer::HandleWindowEvent(SDL_WindowEvent window) {
 	switch (window.event) {
 	case SDL_WINDOWEVENT_RESIZED:
 		Resize(window.data1, window.data2);
@@ -168,3 +178,20 @@ void Viewer::handleWindowEvent(SDL_WindowEvent window) {
 	}
 }
 
+void Viewer::HandleKeyDownEvent(SDL_KeyboardEvent keyboard) {
+	switch (keyboard.keysym.sym) {
+	default:
+		break;
+	}
+}
+
+void Viewer::HandleKeyUpEvent(SDL_KeyboardEvent keyboard) {
+	switch (keyboard.keysym.sym) {
+	case SDLK_SPACE:
+		wireframe_ = !wireframe_;
+		refresh_ = true;
+		break;
+	default:
+		break;
+	}
+}

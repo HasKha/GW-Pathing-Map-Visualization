@@ -24,6 +24,7 @@ private:
 	bool mouse_down_;
 
 	bool refresh_;
+	bool wireframe_;
 
 	double scale_;
 	Point2d translate_;
@@ -44,10 +45,12 @@ public:
 
 	void Close();
 
-	void handleMouseDownEvent(SDL_MouseButtonEvent);
-	void handleMouseUpEvent(SDL_MouseButtonEvent);
-	void handleMouseMoveEvent(SDL_MouseMotionEvent);
-	void handleMouseWheelEvent(SDL_MouseWheelEvent);
+	void HandleMouseDownEvent(SDL_MouseButtonEvent);
+	void HandleMouseUpEvent(SDL_MouseButtonEvent);
+	void HandleMouseMoveEvent(SDL_MouseMotionEvent);
+	void HandleMouseWheelEvent(SDL_MouseWheelEvent);
+	void HandleKeyDownEvent(SDL_KeyboardEvent);
+	void HandleKeyUpEvent(SDL_KeyboardEvent);
 
-	void handleWindowEvent(SDL_WindowEvent);
+	void HandleWindowEvent(SDL_WindowEvent);
 };
