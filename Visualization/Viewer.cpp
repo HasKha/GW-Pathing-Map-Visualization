@@ -9,6 +9,23 @@ Viewer::Viewer() {
 	scale_ = 0.0001;
 	translate_ = Point2d();
 	wireframe_ = false;
+	circles_ = false;
+
+	int n_vertices = 50;
+	for (int i = 0; i < 50; ++i) {
+		float angle = i * (2 * static_cast<float>(M_PI) / n_vertices);
+		float x = std::cos(angle);
+		float y = std::sin(angle);
+		circle_vertices_.push_back(Point2d(x, y));
+	}
+	circle_vertices_.push_back(circle_vertices_[0]);
+
+	circle_sizes_.push_back(300); // nearby aka hos
+	circle_sizes_.push_back(322);
+	circle_sizes_.push_back(366);
+	circle_sizes_.push_back(1085); // spellcast
+	circle_sizes_.push_back(2500); // spirit range
+	circle_sizes_.push_back(5000); // compass
 }
 
 void Viewer::InitializeWindow() {
@@ -45,6 +62,7 @@ void Viewer::Resize(int width, int height) {
 void Viewer::Execute() {
 	bool quit = false;
 	while (!quit) {
+		SDL_Delay(1);
 		// event handling
 		SDL_Event e;
 		while (SDL_PollEvent(&e) != 0) {
@@ -104,6 +122,7 @@ void Viewer::RenderPMap() {
 	glLoadIdentity();
 	glViewport(0, 0, width_, height_);
 	glScaled(scale_, scale_, 1);
+	glPushMatrix();
 	glTranslated(translate_.x(), translate_.y(), 0);
 
 	if (wireframe_) {
@@ -123,6 +142,37 @@ void Viewer::RenderPMap() {
 		glVertex2f(trapezoids_[i].XBL, trapezoids_[i].YB);
 	}
 	glEnd();
+
+	if (circles_) {
+		glPopMatrix();
+		glTranslated(center_.x(), center_.y(), 0.0);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // full quads
+
+		glBegin(GL_POINT);
+		glVertex2f(0.0f, 0.0f);
+		glEnd();
+
+		for (size_t j = 0; j < circle_sizes_.size(); ++j) {
+			glPushMatrix();
+			glScaled(circle_sizes_[j], circle_sizes_[j], 0.0);
+
+			glBegin(GL_LINE_STRIP);
+			for (size_t i = 0; i < circle_vertices_.size(); ++i) {
+				glVertex2d(circle_vertices_[i].x(), circle_vertices_[i].y());
+			}
+			glEnd();
+			glPopMatrix();
+		}
+
+		
+		//glBegin(GL_TRIANGLES);
+		//glVertex2f(center_.x(), center_.y());
+		//glVertex2f(center_.x() + 500, center_.y() - 500);
+		//glVertex2f(center_.x() - 500, center_.y() - 500);
+		//glEnd();
+	}
+
 
 	SDL_GL_SwapWindow(window);
 }
@@ -149,12 +199,25 @@ void Viewer::HandleMouseMoveEvent(SDL_MouseMotionEvent motion) {
 		Point2d diff = Point2d(motion.xrel, -motion.yrel);
 		diff.x() /= width_; // remap from [0, WIDTH] to [0, 1]
 		diff.y() /= height_; // remap from [0, HEIGHT] to [0, 1]
-		diff.y() /= ratio_;
+		diff.y() /= ratio_; // adjust for window aspect ratio
 		diff *= 2; // remap from [0, 1]^2 to [0, 2]^2 (screen space is [-1, 1] so range has to be 2
 		diff /= scale_; // remap for scale
 
 		translate_ += diff;
 		
+		refresh_ = true;
+	}
+
+	{
+		center_ = Point2d(motion.x, motion.y);
+		center_.x() /= width_; // remap from [0, Width] to [0, 1]
+		center_.y() /= -height_; // remap from [0, Height] to [0, 1]
+		center_.y() += 0.5f;
+		center_.x() -= 0.5f;
+		center_.y() /= ratio_; // adjust for window aspect ratio
+		center_ *= 2; // remap from [0, 1]^2 to [0, 2]^2
+		center_ /= scale_;
+
 		refresh_ = true;
 	}
 }
@@ -189,6 +252,10 @@ void Viewer::HandleKeyUpEvent(SDL_KeyboardEvent keyboard) {
 	switch (keyboard.keysym.sym) {
 	case SDLK_SPACE:
 		wireframe_ = !wireframe_;
+		refresh_ = true;
+		break;
+	case SDLK_c:
+		circles_ = !circles_;
 		refresh_ = true;
 		break;
 	default:

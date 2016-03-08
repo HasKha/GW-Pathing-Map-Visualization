@@ -25,6 +25,10 @@ private:
 
 	bool refresh_;
 	bool wireframe_;
+	bool circles_;
+	Point2d center_;
+	std::vector<Point2d> circle_vertices_;
+	std::vector<int> circle_sizes_;
 
 	double scale_;
 	Point2d translate_;

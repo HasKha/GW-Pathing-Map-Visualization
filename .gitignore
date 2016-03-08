@@ -2,3 +2,6 @@ Debug/
 Visualization/PMAPs/
 ipch/
 *.sdf
+Pathingmap Builder/Gw.dat
+Pathingmap Builder/Release/
+Release/

@@ -18,6 +18,7 @@ vector<MFTExpansion> MFTX;
 vector<MFTEntry> MFT;
 
 int PathingMapCount = 0;
+bool not_packed;
 
 // moves file pointer to the specific offset
 void _nfseek(HANDLE f, __int64 offset, int origin)
@@ -79,6 +80,10 @@ void ProcessFile(char* file,DWORD hash)
 
 	if(Trapazoids.size() > 0)
 	{
+		printf("\n");
+		if (not_packed) {
+			printf("not packed!\n");
+		}
 		PathingMap pmap(hash);
 		for(unsigned int i=0;i<Trapazoids.size();i++)
 		{
@@ -98,7 +103,7 @@ void ProcessFile(char* file,DWORD hash)
 		CreateDirectory(TEXT("PMAPs"),NULL);
 		char newname[1024];
 		sprintf_s(newname,1024,".\\PMAPs\\MAP %010u.pmap",hash);
-		pmap.Save(newname);
+		//pmap.Save(newname);
 		PathingMapCount++;
 	}
 	for(unsigned int i=0;i<Trapazoids.size();i++)
@@ -120,12 +125,14 @@ void ExtractFile(MFTEntry* m)
 	unsigned char *Output=NULL;
 	int OutSize=0;
 
+	not_packed = false;
 	if (m->a) UnpackGWDat(Input,m->Size,Output,OutSize);        
 	else
 	{
 		Output=new unsigned char[m->Size];
 		memcpy(Output,Input,m->Size);
 		OutSize=m->Size;
+		not_packed = true;
 	}
 	if (Output)
 	{
@@ -261,6 +268,11 @@ int _tmain(int argc, char* argv[])
 {
 	SetConsoleTitle(TEXT("GW Pathingmap Builder by ACB"));
 	
+	if (argc == 1) {
+		printf("hello world\n");
+		ExtractGWDat("Gw.dat");
+		return 0;
+	}
 	if(argc<3)
 	{
 		PrintUsage();
