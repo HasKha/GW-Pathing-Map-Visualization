@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 
 
 	wchar_t filename[MAX_PATH];
-	wsprintf(filename, L"PMAPs\\MAP %010u.pmap", file_hash);
+	wsprintf(filename, L"..\\PMAPs\\MAP %010u.pmap", file_hash);
 
 	PathingMap pmap(file_hash);
 	bool loaded = pmap.Open(filename);
